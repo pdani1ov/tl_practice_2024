@@ -1,4 +1,3 @@
-using System.Globalization;
 using Accommodations.Commands;
 using Accommodations.Dto;
 
@@ -50,15 +49,20 @@ public static class AccommodationsProcessor
                 }
 
                 CurrencyDto currency = ( CurrencyDto )Enum.Parse( typeof( CurrencyDto ), parts[ 5 ], true );
+                //Добавил парсинг даты с проверкой на корректность даты. В случае, когда дата некорректна,
+                //выбрасывается ArgumentException.
+                DateTime start = ParseDate( parts[ 3 ], "Incorrect start date for booking." );
+                DateTime end = ParseDate( parts[ 4 ], "Incorrect end date for booking." );
+                //Добавил парсинг числа с проверкой на его корректность. В случае, когда число некорректно,
+                //выбрасывается ArgumentException.
+                int userId = ParseInt( parts[ 1 ], "Incorrect user ID for booking." );
 
-                BookingDto bookingDto = new()
-                {
-                    UserId = int.Parse( parts[ 1 ] ),
-                    Category = parts[ 2 ],
-                    StartDate = DateTime.Parse( parts[ 3 ] ),
-                    EndDate = DateTime.Parse( parts[ 4 ] ),
-                    Currency = currency,
-                };
+                BookingDto bookingDto = new BookingDto(
+                    userId,
+                    parts[ 2 ],
+                    start,
+                    end,
+                    currency );
 
                 BookCommand bookCommand = new( _bookingService, bookingDto );
                 bookCommand.Execute();
@@ -72,8 +76,8 @@ public static class AccommodationsProcessor
                     Console.WriteLine( "Invalid number of arguments for canceling." );
                     return;
                 }
-
-                Guid bookingId = Guid.Parse( parts[ 1 ] );
+                //Добавил парсинг id брони с проверкой. Когда id некорректен, то выбрасывается ArgumentException
+                Guid bookingId = ParseBookingId( parts[ 1 ] );
                 CancelBookingCommand cancelCommand = new( _bookingService, bookingId );
                 cancelCommand.Execute();
                 _executedCommands.Add( ++s_commandIndex, cancelCommand );
@@ -81,6 +85,11 @@ public static class AccommodationsProcessor
                 break;
 
             case "undo":
+                if ( _executedCommands.Count == 0 )
+                {
+                    Console.WriteLine( "Command history is empty." );
+                    return;
+                }
                 _executedCommands[ s_commandIndex ].Undo();
                 _executedCommands.Remove( s_commandIndex );
                 s_commandIndex--;
@@ -93,7 +102,8 @@ public static class AccommodationsProcessor
                     Console.WriteLine( "Invalid arguments for 'find'. Expected format: 'find <BookingId>'" );
                     return;
                 }
-                Guid id = Guid.Parse( parts[ 1 ] );
+                //Добавил парсинг id брони с проверкой. Когда id некорректен, то выбрасывается ArgumentException
+                Guid id = ParseBookingId( parts[ 1 ] );
                 FindBookingByIdCommand findCommand = new( _bookingService, id );
                 findCommand.Execute();
                 break;
@@ -104,8 +114,10 @@ public static class AccommodationsProcessor
                     Console.WriteLine( "Invalid arguments for 'search'. Expected format: 'search <StartDate> <EndDate> <CategoryName>'" );
                     return;
                 }
-                DateTime startDate = DateTime.Parse( parts[ 1 ] );
-                DateTime endDate = DateTime.Parse( parts[ 2 ] );
+                //Добавил парсинг даты с проверкой на корректность даты. В случае, когда дата некорректна,
+                //выбрасывается ArgumentException.
+                DateTime startDate = ParseDate( parts[ 1 ], "Incorrect start date for booking." );
+                DateTime endDate = ParseDate( parts[ 2 ], "Incorrect end date for booking." );
                 string categoryName = parts[ 3 ];
                 SearchBookingsCommand searchCommand = new( _bookingService, startDate, endDate, categoryName );
                 searchCommand.Execute();
@@ -115,5 +127,35 @@ public static class AccommodationsProcessor
                 Console.WriteLine( "Unknown command." );
                 break;
         }
+    }
+
+    private static DateTime ParseDate( string str, string errorMsg = "Invalid date for booking." )
+    {
+        if ( DateTime.TryParse( str, out DateTime date ) )
+        {
+            return date;
+        }
+
+        throw new ArgumentException( errorMsg );
+    }
+
+    private static int ParseInt( string str, string errorMsg = "Invalid num" )
+    {
+        if ( int.TryParse( str, out int num ) )
+        {
+            return num;
+        }
+
+        throw new ArgumentException( errorMsg );
+    }
+
+    private static Guid ParseBookingId( string str )
+    {
+        if ( Guid.TryParse( str, out Guid id ) )
+        {
+            return id;
+        }
+
+        throw new ArgumentException( "Incorrect booking id for booking" );
     }
 }

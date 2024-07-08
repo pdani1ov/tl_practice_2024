@@ -7,8 +7,9 @@ public class FindBookingByIdCommand( IBookingService bookingService, Guid bookin
     public void Execute()
     {
         Booking? booking = bookingService.FindBookingById( bookingId );
+        //ѕоправил вывод названи€ категории номера
         Console.WriteLine( booking != null
-            ? $"Booking found: {booking.RoomCategory} for User {booking.UserId}"
+            ? $"Booking found: {booking.RoomCategory.Name} for User {booking.UserId}"
             : "Booking not found." );
     }
 

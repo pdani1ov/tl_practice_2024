@@ -45,7 +45,8 @@ public class BookingService : IBookingService
             throw new ArgumentException( "User not found" );
         }
 
-        int days = ( endDate - startDate ).Days;
+        //Поправил определения количество дней, на которые забронировали номер
+        int days = ( int )Math.Ceiling( ( endDate - startDate ).TotalDays );
         decimal currencyRate = GetCurrencyRate( currency );
         decimal totalCost = CalculateBookingCost( selectedCategory.BaseRate, days, userId, currencyRate );
 
@@ -117,8 +118,10 @@ public class BookingService : IBookingService
         {
             throw new ArgumentException( "Start date cannot be earlier than now date" );
         }
+        //Поправил определения за какое количество дней до начала брони вы отменили бронь
+        TimeSpan time = booking.StartDate - DateTime.Now;
 
-        int daysBeforeArrival = ( DateTime.Now - booking.StartDate ).Days;
+        int daysBeforeArrival = ( int )Math.Ceiling( time.TotalDays );
 
         return 5000.0m / daysBeforeArrival;
     }
@@ -139,8 +142,9 @@ public class BookingService : IBookingService
 
     private static decimal CalculateBookingCost( decimal baseRate, int days, int userId, decimal currencyRate )
     {
-        decimal cost = baseRate * days;
-        decimal totalCost = cost - cost * CalculateDiscount( userId ) * currencyRate;
+        //Поправил высчитвание цены
+        decimal cost = baseRate / currencyRate * days;
+        decimal totalCost = cost - cost * CalculateDiscount( userId );
         return totalCost;
     }
 }
