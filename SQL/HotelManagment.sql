@@ -2,21 +2,25 @@ USE [HotelManagment]
 
 /* --- СОЗДАНИЕ ТАБЛИЦ --- */
 
-/*
-Типы комнат:
-1 - одноместный
-2 - двуместный
-3 - люкс
-*/
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name = 'room_category')
+	CREATE TABLE [dbo].[room_category] (
+		[id] INT IDENTITY(1, 1) NOT NULL,
+		[name] NVARCHAR(50) NOT NULL,
+		[price_per_night] MONEY NOT NULL,
+
+		CONSTRAINT [PK_room_category_id] PRIMARY KEY ([id])
+	)
+
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name = 'room')
 	CREATE TABLE [dbo].[room] (
 		[id] INT IDENTITY(1, 1) NOT NULL,
 		[number] INT NOT NULL,
-		[type] TINYINT NOT NULL,
-		[price_per_night] MONEY NOT NULL,
+		[category_id] INT NOT NULL,
 		[availability] BIT NOT NULL,
 
-		CONSTRAINT [PK_room_id] PRIMARY KEY ([id])
+		CONSTRAINT [PK_room_id] PRIMARY KEY ([id]),
+		CONSTRAINT [FK_room_category_id]
+			FOREIGN KEY ([category_id]) REFERENCES [dbo].[room_category] ([id])
 	)
 
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name = 'customer')
@@ -67,20 +71,26 @@ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name = 'room_to_facility')
 
 /* --- ЗАПОЛНЕНИЕ ТАБЛИЦ ДАННЫМИ --- */
 
-INSERT INTO [dbo].[room] ([number], [type], [price_per_night], [availability])
+INSERT INTO [dbo].[room_category] ([name], [price_per_night])
 VALUES
-	(1, 1, 2000.00, 0),
-	(2, 1, 2000.00, 1),
-	(3, 2, 3500.00, 0),
-	(4, 2, 3500.00, 1),
-	(5, 3, 8000.00, 0),
-	(6, 3, 8000.00, 1),
-	(7, 1, 2000.00, 0),
-	(8, 1, 2000.00, 1),
-	(9, 2, 3500.00, 0),
-	(10, 2, 3500.00, 1),
-	(11, 3, 8000.00, 0),
-	(12, 3, 8000.00, 1)
+	('Одноместный', 2000.00),
+	('Двухместный', 3500.00),
+	('Люкс', 8000.00)
+
+INSERT INTO [dbo].[room] ([number], [category_id], [availability])
+VALUES
+	(1, 1, 0),
+	(2, 1, 1),
+	(3, 2, 0),
+	(4, 2, 1),
+	(5, 3, 0),
+	(6, 3, 1),
+	(7, 1, 0),
+	(8, 1, 1),
+	(9, 2, 0),
+	(10, 2, 1),
+	(11, 3, 0),
+	(12, 3, 1)
 
 INSERT INTO [dbo].[customer] ([first_name], [last_name], [email], [pnone_number])
 VALUES
@@ -138,7 +148,7 @@ VALUES
 	(10, 2)
 
 /* --- ПРОСМОТР ДАННЫХ В ТАБЛИЦЕ --- */
-
+SELECT * FROM [dbo].[room_category]
 SELECT * FROM [dbo].[room]
 SELECT * FROM [dbo].[customer]
 SELECT * FROM [dbo].[booking]
@@ -148,7 +158,8 @@ SELECT * FROM [dbo].[room_to_facility]
 /* --- ВЫПОЛНЕНИЯ ЗАДАНИЯ --- */
 
 /*Найдите все доступные номера для бронирования сегодня.*/
-SELECT * FROM [dbo].[room]
+SELECT [dbo].[room].[number], [dbo].[room].[availability], [dbo].[room_category].[name], [dbo].[room_category].[price_per_night] FROM [dbo].[room]
+LEFT JOIN [dbo].[room_category] ON [dbo].[room_category].[id] = [dbo].[room].[category_id]
 WHERE 
 	[dbo].[room].[availability] = 1
 	AND
@@ -176,7 +187,8 @@ LEFT JOIN [dbo].[room] ON [dbo].[booking].[room_id] = [dbo].[room].[id]
 WHERE [dbo].[room].[number] = 1
 
 /*Найдите все номера, которые не забронированы на определенную дату.*/
-SELECT * FROM [dbo].[room]
+SELECT [dbo].[room].[number], [dbo].[room].[availability], [dbo].[room_category].[name], [dbo].[room_category].[price_per_night] FROM [dbo].[room]
+LEFT JOIN [dbo].[room_category] ON [dbo].[room_category].[id] = [dbo].[room].[category_id]
 WHERE [dbo].[room].[id] NOT IN (
 	SELECT [dbo].[booking].[room_id] FROM [dbo].[booking]
 	WHERE '2024-03-05' BETWEEN [dbo].[booking].[check_in_date] AND [dbo].[booking].[check_out_date]
