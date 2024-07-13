@@ -1,6 +1,6 @@
-USE [HotelManagment]
+п»їUSE [HotelManagment]
 
-/* --- СОЗДАНИЕ ТАБЛИЦ --- */
+/* --- РЎРћР—Р”РђРќРР• РўРђР‘Р›РР¦ --- */
 
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name = 'room_category')
 	CREATE TABLE [dbo].[room_category] (
@@ -69,13 +69,13 @@ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name = 'room_to_facility')
 			FOREIGN KEY ([facility_id]) REFERENCES [dbo].[facility] ([id])
 	)
 
-/* --- ЗАПОЛНЕНИЕ ТАБЛИЦ ДАННЫМИ --- */
+/* --- Р—РђРџРћР›РќР•РќРР• РўРђР‘Р›РР¦ Р”РђРќРќР«РњР --- */
 
 INSERT INTO [dbo].[room_category] ([name], [price_per_night])
 VALUES
-	('Одноместный', 2000.00),
-	('Двухместный', 3500.00),
-	('Люкс', 8000.00)
+	('РћРґРЅРѕРјРµСЃС‚РЅС‹Р№', 2000.00),
+	('Р”РІСѓС…РјРµСЃС‚РЅС‹Р№', 3500.00),
+	('Р›СЋРєСЃ', 8000.00)
 
 INSERT INTO [dbo].[room] ([number], [category_id], [availability])
 VALUES
@@ -117,8 +117,8 @@ VALUES
 INSERT INTO [dbo].[facility] ([name])
 VALUES
 	('WI-FI'),
-	('Мини-бар'),
-	('Кондиционер')
+	('РњРёРЅРё-Р±Р°СЂ'),
+	('РљРѕРЅРґРёС†РёРѕРЅРµСЂ')
 
 INSERT INTO [dbo].[room_to_facility] ([room_id], [facility_id])
 VALUES
@@ -147,7 +147,7 @@ VALUES
 	(10, 1),
 	(10, 2)
 
-/* --- ПРОСМОТР ДАННЫХ В ТАБЛИЦЕ --- */
+/* --- РџР РћРЎРњРћРўР  Р”РђРќРќР«РҐ Р’ РўРђР‘Р›РР¦Р• --- */
 SELECT * FROM [dbo].[room_category]
 SELECT * FROM [dbo].[room]
 SELECT * FROM [dbo].[customer]
@@ -155,9 +155,9 @@ SELECT * FROM [dbo].[booking]
 SELECT * FROM [dbo].[facility]
 SELECT * FROM [dbo].[room_to_facility]
 
-/* --- ВЫПОЛНЕНИЯ ЗАДАНИЯ --- */
+/* --- Р’Р«РџРћР›РќР•РќРРЇ Р—РђР”РђРќРРЇ --- */
 
-/*Найдите все доступные номера для бронирования сегодня.*/
+/*РќР°Р№РґРёС‚Рµ РІСЃРµ РґРѕСЃС‚СѓРїРЅС‹Рµ РЅРѕРјРµСЂР° РґР»СЏ Р±СЂРѕРЅРёСЂРѕРІР°РЅРёСЏ СЃРµРіРѕРґРЅСЏ.*/
 SELECT [dbo].[room].[number], [dbo].[room].[availability], [dbo].[room_category].[name], [dbo].[room_category].[price_per_night] FROM [dbo].[room]
 LEFT JOIN [dbo].[room_category] ON [dbo].[room_category].[id] = [dbo].[room].[category_id]
 WHERE 
@@ -168,11 +168,11 @@ WHERE
 		WHERE GETDATE() BETWEEN [dbo].[booking].[check_in_date] AND [dbo].[booking].[check_out_date]
 	)
 
-/*Найдите всех клиентов, чьи фамилии начинаются с буквы "S".*/
+/*РќР°Р№РґРёС‚Рµ РІСЃРµС… РєР»РёРµРЅС‚РѕРІ, С‡СЊРё С„Р°РјРёР»РёРё РЅР°С‡РёРЅР°СЋС‚СЃСЏ СЃ Р±СѓРєРІС‹ "S".*/
 SELECT * FROM [dbo].[customer]
 WHERE [dbo].[customer].[last_name] LIKE 'S%'
 
-/*Найдите все бронирования для определенного клиента (по имени или электронному адресу).*/
+/*РќР°Р№РґРёС‚Рµ РІСЃРµ Р±СЂРѕРЅРёСЂРѕРІР°РЅРёСЏ РґР»СЏ РѕРїСЂРµРґРµР»РµРЅРЅРѕРіРѕ РєР»РёРµРЅС‚Р° (РїРѕ РёРјРµРЅРё РёР»Рё СЌР»РµРєС‚СЂРѕРЅРЅРѕРјСѓ Р°РґСЂРµСЃСѓ).*/
 SELECT * FROM [dbo].[booking]
 LEFT JOIN [dbo].[customer] ON [dbo].[booking].[customer_id] = [dbo].[customer].[id]
 WHERE [dbo].[customer].[first_name] = 'Sam' AND [dbo].[customer].[last_name] = 'Johnson'
@@ -181,12 +181,12 @@ SELECT * FROM [dbo].[booking]
 LEFT JOIN [dbo].[customer] ON [dbo].[booking].[customer_id] = [dbo].[customer].[id]
 WHERE [dbo].[customer].[email] = 'a.a@mail.ru'
 
-/*Найдите все бронирования для определенного номера.*/
+/*РќР°Р№РґРёС‚Рµ РІСЃРµ Р±СЂРѕРЅРёСЂРѕРІР°РЅРёСЏ РґР»СЏ РѕРїСЂРµРґРµР»РµРЅРЅРѕРіРѕ РЅРѕРјРµСЂР°.*/
 SELECT [dbo].[booking].* FROM [dbo].[booking]
 LEFT JOIN [dbo].[room] ON [dbo].[booking].[room_id] = [dbo].[room].[id]
 WHERE [dbo].[room].[number] = 1
 
-/*Найдите все номера, которые не забронированы на определенную дату.*/
+/*РќР°Р№РґРёС‚Рµ РІСЃРµ РЅРѕРјРµСЂР°, РєРѕС‚РѕСЂС‹Рµ РЅРµ Р·Р°Р±СЂРѕРЅРёСЂРѕРІР°РЅС‹ РЅР° РѕРїСЂРµРґРµР»РµРЅРЅСѓСЋ РґР°С‚Сѓ.*/
 SELECT [dbo].[room].[number], [dbo].[room].[availability], [dbo].[room_category].[name], [dbo].[room_category].[price_per_night] FROM [dbo].[room]
 LEFT JOIN [dbo].[room_category] ON [dbo].[room_category].[id] = [dbo].[room].[category_id]
 WHERE [dbo].[room].[id] NOT IN (
