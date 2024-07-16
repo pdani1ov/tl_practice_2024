@@ -1,5 +1,5 @@
-﻿string productName = GetNameOfProduct();
-uint productQuantity = GetQuantityOfProduct();
+﻿string productName = GetProductName();
+uint productQuantity = GetProductQuantity();
 string username = GetUserName();
 string address = GetAddress();
 ConfirmOrder( productName, productQuantity, username, address );
@@ -15,21 +15,20 @@ string GetName( string errorMsg )
     return str;
 }
 
-string GetNameOfProduct()
+string GetProductName()
 {
     Console.Write( "Введите название продукта:" );
     string nameOfProduct = GetName( "Вы ввели некорректное название продукта!!! Введите название еще раз, пожалуйста!" );
     return nameOfProduct;
 }
 
-uint GetQuantityOfProduct()
+uint GetProductQuantity()
 {
     Console.Write( "Введите количество товаров:" );
-    bool isQuantityReceived = false;
-    uint quantity = 0;
 
-    while ( !isQuantityReceived )
+    while ( true )
     {
+        uint quantity = 0;
         if ( uint.TryParse( Console.ReadLine(), out uint @uint ) )
         {
             quantity = @uint;
@@ -49,10 +48,8 @@ uint GetQuantityOfProduct()
             Console.WriteLine( "Вы ввели некорректное количество товаров!!! Введите количество товаров еще раз, пожалуйста!" );
             continue;
         }
-        isQuantityReceived = true;
+        return quantity;
     }
-
-    return quantity;
 }
 
 string GetUserName()
@@ -71,13 +68,17 @@ string GetAddress()
 
 void ConfirmOrder( string productName, uint productQuantity, string username, string address )
 {
-    Console.WriteLine( $"Здравствуйте, {username}, вы заказали {productQuantity} {productName} на адрес {address}, все верно?" );
+    const string positiveAnswer = "да";
+
+    Console.WriteLine( $"Здравствуйте, {username}, вы заказали {productQuantity} " +
+        $"{productName} на адрес {address}, все верно?(Введите \"да\", если вы согласны)" );
     string answer = Console.ReadLine();
-    if ( answer.ToLower() == "да" )
+    if ( string.Equals( answer, positiveAnswer, StringComparison.OrdinalIgnoreCase ) )
     {
         DateTime dateWithTime = DateTime.Today.AddDays( 3 );
         DateOnly date = DateOnly.FromDateTime( dateWithTime );
-        Console.WriteLine( $"{username}! Ваш заказ {productName} в количестве {productQuantity} оформлен! Ожидайте доставку по адресу {address} к {date}" );
+        Console.WriteLine( $"{username}! Ваш заказ {productName} в количестве {productQuantity} оформлен! " +
+            $"Ожидайте доставку по адресу {address} к {date}" );
     }
     else
     {
