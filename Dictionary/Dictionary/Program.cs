@@ -22,7 +22,7 @@ while ( isWorking )
             SaveDictionaryToFile( dictionaryName, dictionary );
             isWorking = false;
             break;
-        case "show":
+        case "help":
             PrintMenu();
             break;
         default:
@@ -31,49 +31,20 @@ while ( isWorking )
     }
 }
 
-void PrintMenu()
+static void PrintMenu()
 {
     Console.WriteLine( "Command menu:" );
     Console.WriteLine( "add - Add a new word to the dictionary" );
     Console.WriteLine( "translate - Translate the word" );
     Console.WriteLine( "finish - Finish work" );
-    Console.WriteLine( "show - Show command menu" );
+    Console.WriteLine( "help - Show command menu" );
 }
 
-bool IsRussianLanguage( string word )
-{
-    foreach ( char ch in word )
-    {
-        if ( ( ch < 'а' || ch > 'я' ) && ( ch < 'А' || ch > 'Я' ) )
-        {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-bool IsEnglishLanguage( string word )
-{
-    foreach ( char ch in word )
-    {
-        if ( ( ch < 'a' || ch > 'z' ) && ( ch < 'A' || ch > 'Z' ) )
-        {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-string GetWord()
+static string GetWord()
 {
     Console.Write( "Enter word: " );
 
-    bool hasCorrectWord = false;
-    string word = "";
-
-    while ( !hasCorrectWord )
+    while ( true )
     {
         string str = Console.ReadLine().ToLower();
 
@@ -83,30 +54,17 @@ string GetWord()
             continue;
         }
 
-        if ( IsEnglishLanguage( str ) || IsRussianLanguage( str ) )
-        {
-            hasCorrectWord = true;
-            word = str;
-        }
-        else
-        {
-            Console.WriteLine( "You entered a word in an unknown language. Please enter the word again" );
-        }
+        return str;
     }
-
-    return word;
 }
 
-string GetTranslation( bool isEnglishWord )
+static string GetTranslation()
 {
     Console.Write( "Enter translation: " );
 
-    bool hasCorrectTranslate = false;
-    string translation = "";
-
-    while ( !hasCorrectTranslate )
+    while ( true )
     {
-        string str = Console.ReadLine();
+        string str = Console.ReadLine().Trim().ToLower();
 
         if ( string.IsNullOrWhiteSpace( str ) )
         {
@@ -114,30 +72,16 @@ string GetTranslation( bool isEnglishWord )
             continue;
         }
 
-        if ( isEnglishWord && IsRussianLanguage( str ) )
-        {
-            hasCorrectTranslate = true;
-            translation = str.ToLower();
-        }
-        else if ( !isEnglishWord && IsEnglishLanguage( str ) )
-        {
-            hasCorrectTranslate = true;
-            translation = str.ToLower();
-        }
-        else
-        {
-            Console.WriteLine( "Language of translation is incorrect. Please enter the translation again" );
-        }
+        return str;
     }
-
-    return translation;
 }
 
-void PrintListOfWords( List<string> words )
+static void PrintListOfWords( List<string> words )
 {
     for ( int i = 0; i <= words.Count - 1; i++ )
     {
         Console.Write( words[ i ] );
+
         if ( i != words.Count - 1 )
         {
             Console.Write( ", " );
@@ -146,7 +90,7 @@ void PrintListOfWords( List<string> words )
     Console.WriteLine();
 }
 
-List<string> GetTranslationsForRussianWord( Dictionary<String, List<String>> dictionary, string word )
+static List<string> GetTranslationsForRussianWord( Dictionary<String, List<String>> dictionary, string word )
 {
     List<string> translations = new List<string>();
 
@@ -161,95 +105,86 @@ List<string> GetTranslationsForRussianWord( Dictionary<String, List<String>> dic
     return translations;
 }
 
-void SuggestAddingWordToDictionary( ref Dictionary<String, List<String>> dictionary, string word, bool isEnglishWord )
+static void SuggestAddingWordToDictionary( ref Dictionary<String, List<String>> dictionary, string word )
 {
-    Console.WriteLine( "This word is not in the dictionary. Do you want to add this word to the dictionary? Enter \"yes\" if you want to add" );
+    Console.WriteLine( "This word is not in the dictionary. Do you want to add this word to the dictionary? " +
+        "Enter \"yes\" if you want to add" );
 
-    if ( Console.ReadLine() != "yes" )
+    if ( !string.Equals( Console.ReadLine(), "yes", StringComparison.OrdinalIgnoreCase ) )
     {
         return;
     }
 
-    string translation = GetTranslation( isEnglishWord );
+    string translation = GetTranslation();
     string successfulAdditionMsg = "The word was successfully added to the dictionary";
 
-    if ( isEnglishWord )
+    if ( dictionary.ContainsKey( word ) )
     {
-        dictionary[ word ] = new List<string>() { translation };
-        Console.WriteLine( successfulAdditionMsg );
-        return;
-    }
-
-    if ( dictionary.ContainsKey( translation ) )
-    {
-        dictionary[ translation ].Add( word );
-        Console.WriteLine( successfulAdditionMsg );
-        return;
-    }
-
-    dictionary[ translation ] = new List<string>() { word };
-    Console.WriteLine( successfulAdditionMsg );
-}
-
-void TranslateWord( ref Dictionary<String, List<String>> dictionary )
-{
-    string word = GetWord();
-    bool isEnglishWord = IsEnglishLanguage( word );
-
-    if ( isEnglishWord )
-    {
-        if ( dictionary.ContainsKey( word ) )
-        {
-            PrintListOfWords( dictionary[ word ] );
-            return;
-        }
+        dictionary[ word ].Add( translation );
     }
     else
     {
-        List<string> translations = GetTranslationsForRussianWord( dictionary, word );
-        if ( translations.Count != 0 )
-        {
-            PrintListOfWords( translations );
-            return;
-        }
+        dictionary[ word ] = new List<string> { translation };
     }
 
-    SuggestAddingWordToDictionary( ref dictionary, word, isEnglishWord );
+    Console.WriteLine( successfulAdditionMsg );
 }
 
-void AddWordAndTranslationToDictionary( ref Dictionary<String, List<String>> dictionary, bool isEnglishWord, string word, string translation )
+static void TranslateWord( ref Dictionary<String, List<String>> dictionary )
 {
-    if ( !dictionary.ContainsKey( word ) )
+    string word = GetWord();
+
+    if ( dictionary.ContainsKey( word ) )
     {
-        dictionary[ word ] = new List<String>() { translation };
+        PrintListOfWords( dictionary[ word ] );
         return;
     }
 
+    List<string> translations = GetTranslationsForRussianWord( dictionary, word );
+    if ( translations.Count != 0 )
+    {
+        PrintListOfWords( translations );
+        return;
+    }
+
+    SuggestAddingWordToDictionary( ref dictionary, word );
+}
+
+static void AddWordAndTranslationToDictionary(
+    ref Dictionary<String, List<String>> dictionary,
+    string word,
+    string translation )
+{
     if ( dictionary[ word ].Contains( translation ) )
     {
         Console.WriteLine( "This word with translation is already contained in the dictionary" );
+        return;
     }
-
     dictionary[ word ].Add( translation );
     Console.WriteLine( "This word with translation has been successfully added to the dictionary" );
 }
 
-void AddWord( ref Dictionary<String, List<String>> dictionary )
+static void AddWord( ref Dictionary<String, List<String>> dictionary )
 {
     string word = GetWord();
-    bool isEnglishWord = IsEnglishLanguage( word );
-    string translation = GetTranslation( isEnglishWord );
-    if ( isEnglishWord )
+    string translation = GetTranslation();
+
+    if ( dictionary.ContainsKey( word ) )
     {
-        AddWordAndTranslationToDictionary( ref dictionary, isEnglishWord, word, translation );
+        AddWordAndTranslationToDictionary( ref dictionary, word, translation );
+    }
+    else if ( dictionary.ContainsKey( translation ) )
+    {
+        AddWordAndTranslationToDictionary( ref dictionary, translation, word );
     }
     else
     {
-        AddWordAndTranslationToDictionary( ref dictionary, isEnglishWord, translation, word );
+        dictionary[ word ] = new List<String>() { translation };
+        Console.WriteLine( "This word with translation has been successfully added to the dictionary" );
     }
 }
 
-Dictionary<string, List<string>> ReadDictionaryFromFile( string dictionaryName )
+static Dictionary<string, List<string>> ReadDictionaryFromFile( string dictionaryName )
 {
     Dictionary<string, List<string>> dictionary = new Dictionary<string, List<string>>();
 
@@ -286,7 +221,8 @@ void SaveDictionaryToFile( string dictionaryName, Dictionary<string, List<string
 {
     if ( !File.Exists( dictionaryName ) )
     {
-        File.Create( dictionaryName );
+        FileStream fs = File.Create( dictionaryName );
+        fs.Close();
     }
 
     StreamWriter writer = new StreamWriter( dictionaryName );
