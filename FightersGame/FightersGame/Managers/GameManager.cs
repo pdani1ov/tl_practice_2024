@@ -57,7 +57,7 @@ namespace Fighters.Managers
 
         private void PrintFighterList()
         {
-            List<IFighter> fighters = _fighterController.GetFighters();
+            IReadOnlyList<IFighter> fighters = _fighterController.GetFighters();
 
             if ( fighters.Count == 0 )
             {

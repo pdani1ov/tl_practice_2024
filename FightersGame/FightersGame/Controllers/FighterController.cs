@@ -10,7 +10,7 @@ namespace Fighters.Controllers
     {
         private List<IFighter> _fighters = new List<IFighter>();
 
-        public List<IFighter> GetFighters() => _fighters;
+        public IReadOnlyList<IFighter> GetFighters() => _fighters;
 
         public IFighter CreateFighter()
         {
@@ -41,14 +41,27 @@ namespace Fighters.Controllers
 
         public void Fight()
         {
+            const string firstFighterDeathMsg = "Первый боец {fighterName} погиб";
+            const string secondFighterDeathMsg = "Второй боец {fighterName} погиб";
+            const string firstFighterAttackMsg = "Первый боец нанес урон - {causedDamage}. " +
+                "Второй боец получил урон - {receivedDamage}.";
+            const string secondFighterAttackMsg = "Второй боец нанес урон - {causedDamage}. " +
+                "Первый боец получил урон - {receivedDamage}.";
+
             List<IFighter> leaveFighters = _fighters.Where( fighter => fighter.IsAlive() ).ToList();
+
+            //Поверяем, что количество живых бойцов больше 2-х
             if ( leaveFighters.Count < 2 )
             {
                 Console.WriteLine( "Количество живых бойцов меньше 2-х" );
                 return;
             }
+
+            //Получаем первого бойца
             Console.WriteLine( "Введите номер первого бойца, который будет начинать атаку." );
             IFighter fighter1 = GetFighter();
+
+            //Получаем второго бойца и проверяем, что это не первый боец
             Console.WriteLine( "Введите номер второго бойца." );
             IFighter fighter2 = GetFighter();
             while ( fighter1 == fighter2 )
@@ -56,28 +69,38 @@ namespace Fighters.Controllers
                 Console.WriteLine( "Вы ввели номер первого бойца. Он сам с собой биться не может." );
                 fighter2 = GetFighter();
             }
-            bool hasWinner = false;
-            while ( !hasWinner )
+
+            while ( true )
             {
-                int firstFighterDamage = fighter1.CalculateDamage();
-                int receivedBySecondFighterDamage = fighter2.TakeDamage( firstFighterDamage );
-                if ( !fighter2.IsAlive() )
+                if ( AtackExchange( fighter1, fighter2, secondFighterDeathMsg, firstFighterAttackMsg )
+                   || AtackExchange( fighter2, fighter1, firstFighterDeathMsg, secondFighterAttackMsg ) )
                 {
-                    Console.WriteLine( $"Второй боец {fighter2.Name} погиб" );
-                    hasWinner = true;
-                    continue;
+                    return;
                 }
-                Console.WriteLine( $"Первый боец нанес урон - {firstFighterDamage}. Второй боец получил урон - {receivedBySecondFighterDamage}." );
-                int secondFighterDamage = fighter2.CalculateDamage();
-                int receivedByFirstFighterDamage = fighter1.TakeDamage( secondFighterDamage );
-                if ( !fighter1.IsAlive() )
-                {
-                    Console.WriteLine( $"Первый боец {fighter1.Name} погиб" );
-                    hasWinner = true;
-                    continue;
-                }
-                Console.WriteLine( $"Второй боец нанес урон - {secondFighterDamage}. Первый боец получил урон - {receivedByFirstFighterDamage}." );
             }
+        }
+
+        private bool AtackExchange(
+            IFighter attackFighter,
+            IFighter defenceFighter,
+            string fighterDeathMsg,
+            string attackExchangeMsg )
+        {
+            int fighterDamage = attackFighter.CalculateDamage();
+            int receivedByDefenceFighterDamage = defenceFighter.TakeDamage( fighterDamage );
+
+            if ( !defenceFighter.IsAlive() )
+            {
+                Console.WriteLine( fighterDeathMsg.Replace( "{fighterName}", defenceFighter.Name ) );
+                return true;
+            }
+
+            string msg = attackExchangeMsg
+                .Replace( "{causedDamage}", fighterDamage.ToString() )
+                .Replace( "{receivedDamage}", receivedByDefenceFighterDamage.ToString() );
+
+            Console.WriteLine( msg );
+            return false;
         }
 
         private IFighter GetFighterWithType( IRace race, string name )
@@ -118,7 +141,7 @@ namespace Fighters.Controllers
             {
                 string? str = Console.ReadLine();
 
-                if ( str == null && string.IsNullOrWhiteSpace( str ) )
+                if ( string.IsNullOrWhiteSpace( str ) )
                 {
                     Console.WriteLine( "Вы ввели некоррекстное имя. Введите имя заново." );
                     continue;
