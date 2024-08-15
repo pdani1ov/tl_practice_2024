@@ -19,38 +19,38 @@ describe("Learning deck", () => {
     };
 
     describe("Get current card", () => {
-        it("return first card in learning deck", () => {
+        it("should return first card in learning deck", () => {
             expect(getCurrentCard(deck)).toEqual(card1);
         });
 
-        it("return undefined if learning deck is empty", () => {
+        it("should return undefined if learning deck is empty", () => {
             const emptyDeck = { ...deck, unlearnedCards: [] };
             expect(getCurrentCard(emptyDeck)).toBeUndefined();
         });
     });
 
     describe("Remove current card", () => {
-        it("remove current card and return deck", () => {
+        it("should remove current card and return deck", () => {
             const updatedDeck = { ...deck, unlearnedCards: [card2] };
             expect(removeCurrentCard(deck)).toEqual(updatedDeck);
         });
 
-        it("no change if there are no unlearned words", () => {
+        it("should no change if there are no unlearned words", () => {
             expect(removeCurrentCard({...deck, unlearnedCards: []})).toEqual({...deck, unlearnedCards: []});
         });
 
-        it("return new deck", () => {
+        it("should return new deck", () => {
             expect(removeCurrentCard(deck)).not.toBe(deck);
         });
     });
 
     describe("Move current card to end of deck", () => {
-        it("move current card to end of deck and return deck", () => {
+        it("should move current card to end of deck and return deck", () => {
             const updatedDeck = { ...deck, unlearnedCards: [card2, card1] };
             expect(moveCurrentCardToDeckEnd(deck)).toEqual(updatedDeck);
         });
 
-        it("return new deck", () => {
+        it("should return new deck", () => {
             expect(moveCurrentCardToDeckEnd(deck)).not.toBe(deck);
         });
     });

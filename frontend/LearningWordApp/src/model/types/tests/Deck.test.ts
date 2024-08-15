@@ -9,7 +9,7 @@ describe("Deck", () => {
             cards: []
         };
 
-        it("Change name of deck and return deck", () => {
+        it("should change name of deck and return deck", () => {
             const updatedDeck = {
                 ...deck,
                 name: "vegetables"
@@ -17,7 +17,7 @@ describe("Deck", () => {
             expect(changeName(deck, "vegetables")).toEqual(updatedDeck);
         });
 
-        it("Return new deck", () => {
+        it("should return new deck", () => {
             expect(changeName(deck, "vegetables")).not.toBe(deck);
         });
     });
@@ -39,17 +39,17 @@ describe("Deck", () => {
             cards: [card1, card2]
         };
 
-        it("removes the desired card from the deck and return the deck", () => {
+        it("should remove the desired card from the deck and return the deck", () => {
             const updatedDeck = {...deck, cards: [card2]};
             expect(deleteCardFromDeck(deck, "1")).toEqual(updatedDeck);
         });
 
-        it("entering an incorrect id does not change the deck and the deck is returned", () => {
+        it("should no change in deck and return deck if incorrect card id", () => {
             const updatedDeck = { ...deck };
             expect(deleteCardFromDeck(deck, "3")).toEqual(updatedDeck);
         });
 
-        it("return new deck", () => {
+        it("should return new deck", () => {
             expect(deleteCardFromDeck(deck, "1")).not.toBe(deck);
         });
     });

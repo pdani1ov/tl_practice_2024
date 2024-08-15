@@ -10,15 +10,15 @@ export type Deck = {
 function createDeck(name: string): Deck {
     return {
         id: uuidv4(),
-        name: name,
+        name,
         cards: []
     };
 }
 
-function changeName(deck: Deck, newName: string): Deck {
+function changeName(deck: Deck, name: string): Deck {
     return {
         ...deck,
-        name: newName
+        name
     };
 }
 

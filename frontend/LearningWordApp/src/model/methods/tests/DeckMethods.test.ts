@@ -13,7 +13,7 @@ describe("Deck methods", () => {
     }
 
     describe("Add new deck", () => {
-        it("add new deck and return app", () => {
+        it("should add new deck and return app", () => {
             const expectedResult = expect.arrayContaining([
                 expect.objectContaining({
                     name: "vegetables"
@@ -26,29 +26,29 @@ describe("Deck methods", () => {
             );
         });
 
-        it("return new app", () => {
+        it("should return new app", () => {
             expect(addNewDeck(app, "vegetables")).not.toBe(app);
         });
     });
 
     describe("Delete deck", () => {
-        it("delete deck and return app", () => {
+        it("should delete deck and return app", () => {
             const updatedApp = { ...app, decks: [] };
             expect(deleteDeck(app, "1")).toEqual(updatedApp);
         });
 
-        it("no changes if id of deck is incorrect", () => {
+        it("should no changes if id of deck is incorrect", () => {
             const withoutChangesApp = {...app};
             expect(deleteDeck(app, "2")).toEqual(withoutChangesApp);
         });
 
-        it("return new app", () => {
+        it("should return new app", () => {
             expect(deleteDeck(app, "1")).not.toBe(app);
         });
     });
 
     describe("Change name of deck", () => {
-        it("change name of deck and return app", () => {
+        it("should change name of deck and return app", () => {
             const expectedResult = expect.arrayContaining([
                 expect.objectContaining({
                     id: "1",
@@ -63,12 +63,12 @@ describe("Deck methods", () => {
             );
         });
 
-        it("no changes if id of deck is incorrect", () => {
+        it("should no changes if id of deck is incorrect", () => {
             const withoutChangesApp = {...app};
             expect(changeDeckName(app, "2", "newName")).toEqual(withoutChangesApp);
         });
 
-        it("return new app", () => {
+        it("should return new app", () => {
             expect(changeDeckName(app, "1", "newName")).not.toBe(app);
         });
     })

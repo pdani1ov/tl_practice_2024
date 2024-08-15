@@ -24,7 +24,7 @@ describe("Card methods", () => {
     }
 
     describe("Add new card", () => {
-        it("add new card and return app", () => {
+        it("should add new card and return app", () => {
             const expectedResult = expect.arrayContaining([
                 expect.objectContaining({
                     id: "1",
@@ -43,18 +43,18 @@ describe("Card methods", () => {
             );
         });
 
-        it("no change if incorrect deck id", () => {
+        it("should no change if incorrect deck id", () => {
             const withoutChangesApp = {...app};
             expect(addNewCard(app, "2", "peach", "персик")).toEqual(withoutChangesApp);
         });
         
-        it("return new app", () => {
+        it("should return new app", () => {
             expect(addNewCard(app, "1", "peach", "персик")).not.toBe(app);
         });
     });
 
     describe("Delete card", () => {
-        it("delete card and return app", () => {
+        it("should delete card and return app", () => {
             const expectedResult = expect.arrayContaining([
                 expect.objectContaining({
                     id: "1",
@@ -74,23 +74,23 @@ describe("Card methods", () => {
             );
         });
 
-        it("no changes if id of deck is incorrect", () => {
+        it("should no changes if id of deck is incorrect", () => {
             const withoutChangesApp = {...app};
             expect(deleteCard(app, "2", "1")).toEqual(withoutChangesApp);
         });
 
-        it("no changes if id of card is incorrect", () => {
+        it("should no changes if id of card is incorrect", () => {
             const withoutChangesApp = {...app};
             expect(deleteCard(app, "1", "3")).toEqual(withoutChangesApp);
         });
 
-        it("return new app", () => {
+        it("should return new app", () => {
             expect(deleteCard(app, "1", "1")).not.toBe(app);
         });
     });
 
     describe("Change card word", () => {
-        it("change card word and return app", () => {
+        it("should change card word and return app", () => {
             const expectedResult = expect.arrayContaining([
                 expect.objectContaining({
                     id: "1",
@@ -110,23 +110,23 @@ describe("Card methods", () => {
             );
         });
 
-        it("no changes if id of deck is incorrect", () => {
+        it("should no changes if id of deck is incorrect", () => {
             const withoutChangesApp = {...app};
             expect(changeCardWord(app, "2", "1", "newWord")).toEqual(withoutChangesApp);
         });
 
-        it("no changes if id of card is incorrect", () => {
+        it("should no changes if id of card is incorrect", () => {
             const withoutChangesApp = {...app};
             expect(changeCardWord(app, "1", "3", "newWord")).toEqual(withoutChangesApp);
         });
 
-        it("return new app", () => {
+        it("should return new app", () => {
             expect(changeCardWord(app, "1", "1", "newWord")).not.toBe(app);
         });
     });
 
     describe("Change card translation", () => {
-        it("change card translations and return app", () => {
+        it("should change card translations and return app", () => {
             const expectedResult = expect.arrayContaining([
                 expect.objectContaining({
                     id: "1",
@@ -146,17 +146,17 @@ describe("Card methods", () => {
             );
         });
 
-        it("no changes if id of deck is incorrect", () => {
+        it("should no changes if id of deck is incorrect", () => {
             const withoutChangesApp = {...app};
             expect(changeCardTranslation(app, "2", "1", "newTranslation")).toEqual(withoutChangesApp);
         });
 
-        it("no changes if id of card is incorrect", () => {
+        it("should no changes if id of card is incorrect", () => {
             const withoutChangesApp = {...app};
             expect(changeCardTranslation(app, "1", "3", "newTranslation")).toEqual(withoutChangesApp);
         });
 
-        it("return new app", () => {
+        it("should return new app", () => {
             expect(changeCardTranslation(app, "1", "1", "newTranslation")).not.toBe(app);
         });
     });

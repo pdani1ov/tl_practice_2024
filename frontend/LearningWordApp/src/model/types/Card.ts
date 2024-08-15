@@ -9,22 +9,22 @@ export type Card = {
 function createCard(word: string, translation: string): Card {
     return {
         id: uuidv4(),
-        word: word,
-        translation: translation
+        word,
+        translation
     };
 }
 
 function changeWordInCard(card: Card, word: string): Card {
     return {
         ...card,
-        word: word
+        word
     };
 }
 
 function changeTranslationInCard(card: Card, translation: string): Card {
     return {
         ...card,
-        translation: translation
+        translation
     };
 }
 
