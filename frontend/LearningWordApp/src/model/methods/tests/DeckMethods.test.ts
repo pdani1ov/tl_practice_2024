@@ -13,7 +13,7 @@ describe("Deck methods", () => {
     }
 
     describe("Add new deck", () => {
-        it("should add new deck and return app", () => {
+        it("should add new deck", () => {
             const expectedResult = expect.arrayContaining([
                 expect.objectContaining({
                     name: "vegetables"
@@ -32,7 +32,7 @@ describe("Deck methods", () => {
     });
 
     describe("Delete deck", () => {
-        it("should delete deck and return app", () => {
+        it("should delete deck", () => {
             const updatedApp = { ...app, decks: [] };
             expect(deleteDeck(app, "1")).toEqual(updatedApp);
         });
@@ -48,7 +48,7 @@ describe("Deck methods", () => {
     });
 
     describe("Change name of deck", () => {
-        it("should change name of deck and return app", () => {
+        it("should change name of deck", () => {
             const expectedResult = expect.arrayContaining([
                 expect.objectContaining({
                     id: "1",

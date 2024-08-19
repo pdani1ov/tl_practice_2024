@@ -30,7 +30,7 @@ describe("Learning deck", () => {
     });
 
     describe("Remove current card", () => {
-        it("should remove current card and return deck", () => {
+        it("should remove current card", () => {
             const updatedDeck = { ...deck, unlearnedCards: [card2] };
             expect(removeCurrentCard(deck)).toEqual(updatedDeck);
         });
@@ -45,7 +45,7 @@ describe("Learning deck", () => {
     });
 
     describe("Move current card to end of deck", () => {
-        it("should move current card to end of deck and return deck", () => {
+        it("should move current card to end of deck", () => {
             const updatedDeck = { ...deck, unlearnedCards: [card2, card1] };
             expect(moveCurrentCardToDeckEnd(deck)).toEqual(updatedDeck);
         });

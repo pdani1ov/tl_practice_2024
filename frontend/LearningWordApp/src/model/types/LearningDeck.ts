@@ -18,9 +18,16 @@ function removeCurrentCard(deck: LearningDeck): LearningDeck {
 }
 
 function moveCurrentCardToDeckEnd(deck: LearningDeck): LearningDeck {
-    const updatedUnlearnedCards = deck.unlearnedCards.length < 2
-    ? deck.unlearnedCards
-    : [ ...deck.unlearnedCards.slice(1), deck.unlearnedCards[0] ];
+    const canMoveCurrentCardToUnlearnedCardsEnd = deck.unlearnedCards.length >= 2;
+
+    if (!canMoveCurrentCardToUnlearnedCardsEnd)
+    {
+        return deck;
+    }
+
+    const currentCard = deck.unlearnedCards[0];
+    const otherCardsWithoutFirst = deck.unlearnedCards.slice(1);
+    const updatedUnlearnedCards = [ ...otherCardsWithoutFirst, currentCard ];
 
     return {
         ...deck,

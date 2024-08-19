@@ -4,7 +4,7 @@ describe("Card", () => {
     describe("Change word in card", () => {
         const card: Card = { id: "1", word: "lock", translation: "замок" };
 
-        it("should set new name in card and return card", () => {
+        it("should set new name in card", () => {
             const updatedCard = { ...card, word: "castle" };
             expect(changeWordInCard(card, "castle")).toEqual(updatedCard);
         });
@@ -17,7 +17,7 @@ describe("Card", () => {
     describe("Change translation in card", () => {
         const card: Card = { id: "1", word: "castle", translation: "замок" };
 
-        it("should set new translation in card and return card", () => {
+        it("should set new translation in card", () => {
             const updatedCard = { ...card, translation: "крепость" };
             expect(changeTranslationInCard(card, "крепость")).toEqual(updatedCard);
         });

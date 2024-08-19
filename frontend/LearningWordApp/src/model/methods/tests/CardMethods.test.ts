@@ -24,7 +24,7 @@ describe("Card methods", () => {
     }
 
     describe("Add new card", () => {
-        it("should add new card and return app", () => {
+        it("should add new card", () => {
             const expectedResult = expect.arrayContaining([
                 expect.objectContaining({
                     id: "1",
@@ -54,7 +54,7 @@ describe("Card methods", () => {
     });
 
     describe("Delete card", () => {
-        it("should delete card and return app", () => {
+        it("should delete card", () => {
             const expectedResult = expect.arrayContaining([
                 expect.objectContaining({
                     id: "1",
@@ -90,7 +90,7 @@ describe("Card methods", () => {
     });
 
     describe("Change card word", () => {
-        it("should change card word and return app", () => {
+        it("should change card word", () => {
             const expectedResult = expect.arrayContaining([
                 expect.objectContaining({
                     id: "1",
@@ -126,7 +126,7 @@ describe("Card methods", () => {
     });
 
     describe("Change card translation", () => {
-        it("should change card translations and return app", () => {
+        it("should change card translations", () => {
             const expectedResult = expect.arrayContaining([
                 expect.objectContaining({
                     id: "1",

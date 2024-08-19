@@ -9,7 +9,7 @@ describe("Deck", () => {
             cards: []
         };
 
-        it("should change name of deck and return deck", () => {
+        it("should change name of deck", () => {
             const updatedDeck = {
                 ...deck,
                 name: "vegetables"
@@ -39,7 +39,7 @@ describe("Deck", () => {
             cards: [card1, card2]
         };
 
-        it("should remove the desired card from the deck and return the deck", () => {
+        it("should remove the desired card from the deck", () => {
             const updatedDeck = {...deck, cards: [card2]};
             expect(deleteCardFromDeck(deck, "1")).toEqual(updatedDeck);
         });
