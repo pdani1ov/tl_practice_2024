@@ -1,5 +1,5 @@
 import { Application } from "../types/Application";
-import { changeTranslationInCard, changeWordInCard, createCard } from "../types/Card";
+import { Card, changeTranslationInCard, changeWordInCard, createCard } from "../types/Card";
 import { deleteCardFromDeck } from "../types/Deck";
 
 function addNewCard(app: Application, deckId: string, word: string, translation: string): Application {
@@ -77,4 +77,10 @@ function changeCardTranslation(app: Application, deckId: string, cardId: string,
   };
 }
 
-export { addNewCard, deleteCard, changeCardWord, changeCardTranslation };
+function getCardById(app: Application, deckId: string, cardId: string): Card {
+  const [neededDeck] = app.decks.filter((deck) => deck.id === deckId);
+  const [neededCard] = neededDeck.cards.filter((card) => card.id === cardId);
+  return neededCard;
+}
+
+export { addNewCard, deleteCard, changeCardWord, changeCardTranslation, getCardById };

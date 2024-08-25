@@ -1,0 +1,39 @@
+@mixin button-container {
+  border-radius: 5px;
+  padding: 10px;
+  height: 30px;
+  border-width: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.button--default {
+  @include button-container();
+  background-color: #6c19ff;
+  color: #fff;
+}
+
+.button--delete {
+  @include button-container();
+  color: #6c19ff;
+}
+
+.button--delete:hover {
+  background-color: #870320;
+  color: #fff;
+}
+
+.button--link {
+  @include button-container();
+  color: #6c19ff;
+}
+
+.button--link:hover {
+  text-decoration: underline;
+}

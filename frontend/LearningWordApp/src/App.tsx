@@ -1,37 +1,81 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { useEffect, useState } from "react";
 import "./App.css";
+import { DeckList } from "./components/deckList/DeckList";
+import { Deck } from "./model/types/Deck";
+import { CardList } from "./components/cardList/CardList";
+import { useAppStore } from "./store/useAppStore";
+import { LearningWords } from "./components/learningWords/LearningWords";
+import { LearningDeck, moveCurrentCardToDeckEnd, removeCurrentCard } from "./model/types/LearningDeck";
+import { randomCards } from "./common/random";
+
+type LearningWordsAppState = "decks" | "cards" | "learning";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const getDeckById = useAppStore((state) => state.actions.getDeckById);
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button
-          onClick={() => {
-            setCount((count) => count + 11);
-          }}
-        >
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-    </>
-  );
+  const [selectedDeckId, setSelectedDeckId] = useState<string | undefined>();
+  const [appState, setAppState] = useState<LearningWordsAppState>("decks");
+  const [learningDeck, setLearningDeck] = useState<LearningDeck | undefined>(undefined);
+
+  const openCardList = (deck: Deck) => {
+    setSelectedDeckId(deck.id);
+    setLearningDeck(undefined);
+    setAppState("cards");
+  };
+
+  const openLearningDeck = () => {
+    if (selectedDeckId !== undefined) {
+      const deck = getDeckById(selectedDeckId);
+      setLearningDeck({ ...deck, unlearnedCards: randomCards(deck.cards) });
+      setAppState("learning");
+    }
+  };
+
+  const onLearnSuccess = () => {
+    if (learningDeck !== undefined) {
+      setLearningDeck(removeCurrentCard(learningDeck));
+    }
+  };
+
+  const onLearnFail = () => {
+    if (learningDeck !== undefined) {
+      setLearningDeck(moveCurrentCardToDeckEnd(learningDeck));
+    }
+  };
+
+  useEffect(() => {
+    if (appState === "decks") {
+      setSelectedDeckId(undefined);
+    }
+  }, [appState]);
+
+  if (selectedDeckId !== undefined && appState === "cards") {
+    return (
+      <CardList
+        onClose={() => {
+          setAppState("decks");
+        }}
+        learnWords={openLearningDeck}
+        deckId={selectedDeckId}
+      />
+    );
+  } else if (selectedDeckId !== undefined && learningDeck !== undefined && appState === "learning") {
+    return (
+      <LearningWords
+        learningDeck={learningDeck}
+        onClose={() => {
+          setAppState("cards");
+        }}
+        onDeckList={() => {
+          setAppState("decks");
+        }}
+        onSuccess={onLearnSuccess}
+        onFail={onLearnFail}
+      />
+    );
+  } else {
+    return <DeckList selectDeck={openCardList} />;
+  }
 }
 
 export default App;

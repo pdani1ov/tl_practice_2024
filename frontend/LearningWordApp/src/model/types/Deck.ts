@@ -1,11 +1,11 @@
 import { Card } from "./Card";
 import { v4 as uuidv4 } from "uuid";
 
-export interface Deck {
+export type Deck = {
   id: string;
   name: string;
   cards: Card[];
-}
+};
 
 function createDeck(name: string): Deck {
   return {

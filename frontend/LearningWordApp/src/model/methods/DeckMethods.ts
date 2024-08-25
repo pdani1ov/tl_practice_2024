@@ -1,5 +1,5 @@
 import { Application } from "../types/Application";
-import { createDeck, changeName } from "../types/Deck";
+import { createDeck, changeName, Deck } from "../types/Deck";
 
 function addNewDeck(app: Application, name: string): Application {
   return {
@@ -29,4 +29,9 @@ function changeDeckName(app: Application, deckId: string, newName: string): Appl
   };
 }
 
-export { addNewDeck, deleteDeck, changeDeckName };
+function getDeckById(app: Application, deckId: string): Deck {
+  const [neededDeck] = app.decks.filter((deck) => deck.id === deckId);
+  return neededDeck;
+}
+
+export { addNewDeck, deleteDeck, changeDeckName, getDeckById };

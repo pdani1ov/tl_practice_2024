@@ -1,10 +1,10 @@
 import { Card } from "./Card";
 
-export interface LearningDeck {
+export type LearningDeck = {
   id: string;
   name: string;
   unlearnedCards: Card[];
-}
+};
 
 function getCurrentCard(deck: LearningDeck): Card | undefined {
   return deck.unlearnedCards[0];

@@ -1,5 +1,5 @@
 import { Deck } from "./Deck";
 
-export interface Application {
+export type Application = {
   decks: Deck[];
-}
+};

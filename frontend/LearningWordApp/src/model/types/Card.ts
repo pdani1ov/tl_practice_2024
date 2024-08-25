@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 
-export interface Card {
+export type Card = {
   id: string;
   word: string;
   translation: string;
-}
+};
 
 function createCard(word: string, translation: string): Card {
   return {

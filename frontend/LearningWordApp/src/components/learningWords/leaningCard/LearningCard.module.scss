@@ -1,0 +1,29 @@
+@mixin card-container {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  width: 400px;
+  height: 250px;
+  text-align: center;
+  user-select: none;
+  cursor: pointer;
+  font-size: 30px;
+  font-weight: 500;
+  animation: flip 500ms ease-in-out;
+}
+
+.card-container-front {
+  @include card-container();
+  background-color: #6c19ff;
+  border: 1px solid #adf7ff;
+  color: #adf7ff;
+}
+
+.card-container-back {
+  @include card-container();
+  background-color: #adf7ff;
+  border: 1px solid #6c19ff;
+  color: #6c19ff;
+}

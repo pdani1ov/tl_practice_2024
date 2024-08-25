@@ -1,0 +1,32 @@
+.text-field-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.text-field {
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  border: 1px solid #6c19ff;
+  width: 100%;
+  height: 50px;
+}
+
+.text-field-input {
+  outline: none;
+  border: none;
+  color: #6c19ff;
+  padding-inline: 10px;
+  font-size: 18px;
+}
+
+.text-field-input::placeholder {
+  user-select: none;
+  color: #dac6ff;
+}
+
+.error-message {
+  color: #870320;
+  font-size: 12px;
+}

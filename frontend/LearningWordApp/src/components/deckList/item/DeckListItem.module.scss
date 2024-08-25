@@ -1,0 +1,35 @@
+@mixin item-text() {
+  max-width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.deck-item {
+  padding: 15px 30px;
+  background-color: #fff;
+  color: #6c19ff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 10px;
+  border: 1px solid #6c19ff;
+  width: 300px;
+  user-select: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.item-info {
+  max-width: 80%;
+}
+
+.item-name {
+  @include item-text();
+  font-size: 20px;
+}
+
+.item-cards-count {
+  @include item-text();
+  font-size: 14px;
+}
