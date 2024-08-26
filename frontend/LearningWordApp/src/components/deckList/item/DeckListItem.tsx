@@ -10,29 +10,20 @@ type DeckListItemProps = {
 };
 
 export const DeckListItem = ({ deck, onClick, onDeleteClick }: DeckListItemProps) => {
-
-
   return (
-    <>
-      <div
-        className={styles["deck-item"]}
+    <div className={styles["deck-item"]} onClick={onClick}>
+      <div className={styles["item-info"]}>
+        <div className={styles["item-name"]}>{deck.name}</div>
+        <div className={styles["item-cards-count"]}>{`Количество карточек: ${deck.cards.length.toString()}`}</div>
+      </div>
+      <Button
+        type="delete"
         onClick={() => {
-          onClick();
+          onDeleteClick(deck.id);
         }}
       >
-        <div className={styles["item-info"]}>
-          <div className={styles["item-name"]}>{deck.name}</div>
-          <div className={styles["item-cards-count"]}>{`Количество карточек: ${deck.cards.length.toString()}`}</div>
-        </div>
-        <Button
-          type="delete"
-          onClick={() => {
-            onDeleteClick(deck.id);
-          }}
-        >
-          <DeleteIcon width={30} height={30} />
-        </Button>
-      </div>
-    </>
+        <DeleteIcon width={30} height={30} />
+      </Button>
+    </div>
   );
 };

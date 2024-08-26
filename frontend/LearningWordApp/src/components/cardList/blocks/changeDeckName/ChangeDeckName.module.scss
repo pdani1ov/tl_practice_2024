@@ -1,0 +1,23 @@
+.change-name-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+  height: auto;
+  height: 150px;
+}
+
+.change-name-block-header {
+  user-select: none;
+  color: #6c19ff;
+  font-size: 20px;
+  height: 40px;
+}
+
+.change-name {
+  display: flex;
+  flex-direction: row;
+  user-select: none;
+  gap: 10px;
+}

@@ -4,7 +4,7 @@ import { DeckList } from "./components/deckList/DeckList";
 import { Deck } from "./model/types/Deck";
 import { CardList } from "./components/cardList/CardList";
 import { useAppStore } from "./store/useAppStore";
-import { LearningWords } from "./components/learningWords/LearningWords";
+import { LearningCards } from "./components/learningCards/LearningCards";
 import { LearningDeck, moveCurrentCardToDeckEnd, removeCurrentCard } from "./model/types/LearningDeck";
 import { randomCards } from "./common/random";
 
@@ -61,7 +61,7 @@ function App() {
     );
   } else if (selectedDeckId !== undefined && learningDeck !== undefined && appState === "learning") {
     return (
-      <LearningWords
+      <LearningCards
         learningDeck={learningDeck}
         onClose={() => {
           setAppState("cards");
