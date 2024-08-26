@@ -12,7 +12,7 @@ type DeckListProps = {
 
 export const DeckList = ({ selectDeck }: DeckListProps) => {
   const decks: Deck[] = useAppStore((state) => state.info.decks);
-  const { addNewDeck } = useAppStore((state) => state.actions);
+  const { addNewDeck, removeDeck } = useAppStore((state) => state.actions);
 
   const [newDeckName, setNewDeckName] = useState("");
   const [isValidDeckName, setIsValidDeckName] = useState(true);
@@ -27,6 +27,10 @@ export const DeckList = ({ selectDeck }: DeckListProps) => {
     setNewDeckName("");
   };
 
+  const onDeleteClick = (deckId: string) => {
+    removeDeck(deckId);
+  };
+
   return (
     <div className={styles["deck-list"]}>
       <div className={styles["deck-list-header"]}>{"Deck list"}</div>
@@ -38,6 +42,7 @@ export const DeckList = ({ selectDeck }: DeckListProps) => {
             onClick={() => {
               selectDeck(deck);
             }}
+            onDeleteClick={onDeleteClick}
           />
         ))}
       </div>

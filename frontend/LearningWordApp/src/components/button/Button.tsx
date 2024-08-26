@@ -11,13 +11,14 @@ type BackButtonProps = {
 
 export const Button = ({ onClick, children, type }: BackButtonProps) => {
   const className = `button--${type}`;
+
+  const onButtonClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+    onClick();
+  };
+
   return (
-    <div
-      className={styles[className]}
-      onClick={() => {
-        onClick();
-      }}
-    >
+    <div className={styles[className]} onClick={onButtonClick}>
       {children}
     </div>
   );
