@@ -12,7 +12,7 @@ export const LearningCardsFinish = ({ onClick, failsCount }: LearningCardsFinish
     <div className={styles["learning-cards-finish-container"]}>
       <div className={styles["learning-cards-finish"]}>
         <div className={styles["learning-cards-finish-header"]}>{"Finish!"}</div>
-        <img className={styles["finish-image"]} src={finishImage} alt="finish" />
+        <img draggable={false} className={styles["finish-image"]} src={finishImage} alt="finish" />
         <div
           className={styles["learning-cards-finish-number-mistakes"]}
         >{`Number of mistakes: ${failsCount.toString()}`}</div>

@@ -21,6 +21,7 @@
 
 .finish-image {
   height: 200px;
+  user-select: none;
 }
 
 .learning-cards-finish-header {
@@ -29,7 +30,7 @@
   font-weight: 600;
 }
 
-.learning-cards-inish-number-mistakes {
+.learning-cards-finish-number-mistakes {
   user-select: none;
   font-size: 20px;
 }
