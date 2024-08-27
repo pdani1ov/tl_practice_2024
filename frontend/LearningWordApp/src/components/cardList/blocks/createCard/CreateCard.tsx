@@ -3,6 +3,7 @@ import { useAppStore } from "../../../../store/useAppStore";
 import { TextField } from "../../../textField/TextField";
 import { Button } from "../../../button/Button";
 import styles from "./CreateCard.module.scss";
+import { useCardFormValidation } from "../../../../hooks/useCardFormValidation";
 
 type CreateCardProps = {
   deckId: string;
@@ -12,20 +13,14 @@ export const CreateCard = ({ deckId }: CreateCardProps) => {
   const addNewCardAction = useAppStore((state) => state.addNewCard);
   const [word, setWord] = useState("");
   const [translation, setTranslation] = useState("");
-  const [isValidWord, setIsValidWord] = useState(true);
-  const [isValidTranslation, setIsValidTranslation] = useState(true);
+  const [isValidWord, isValidTranslation, checkValidation] = useCardFormValidation(word, translation);
 
   const onClick = () => {
-    if (word.length !== 0 && translation.length !== 0) {
-      setIsValidWord(true);
-      setIsValidTranslation(true);
+    if (checkValidation()) {
       addNewCardAction(deckId, word, translation);
       setWord("");
       setTranslation("");
-      return;
     }
-    setIsValidWord(word.length !== 0);
-    setIsValidTranslation(translation.length !== 0);
   };
 
   return (
