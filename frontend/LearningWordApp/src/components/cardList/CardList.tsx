@@ -14,7 +14,7 @@ type CardListProps = {
 };
 
 export const CardList = ({ onClose, learnWords, deckId }: CardListProps) => {
-  const deck = useAppStore((state) => state.actions.getDeckById(deckId));
+  const deck = useAppStore((state) => state.getDeckById(deckId));
 
   const [deckName, setDeckName] = useState("");
   const [isVisibleErrorMsg, setIsVisibleErrorMsg] = useState(false);

@@ -9,7 +9,7 @@ type CreateCardProps = {
 };
 
 export const CreateCard = ({ deckId }: CreateCardProps) => {
-  const addNewCardAction = useAppStore((state) => state.actions.addNewCard);
+  const addNewCardAction = useAppStore((state) => state.addNewCard);
   const [word, setWord] = useState("");
   const [translation, setTranslation] = useState("");
   const [isValidWord, setIsValidWord] = useState(true);

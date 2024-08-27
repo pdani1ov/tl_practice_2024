@@ -10,10 +10,10 @@ type CardListItemProps = {
 };
 
 export const CardListItem = ({ deckId, cardId }: CardListItemProps) => {
-  const card = useAppStore((state) => state.actions.getCardById(deckId, cardId));
+  const card = useAppStore((state) => state.getCardById(deckId, cardId));
   const [word, setWord] = useState(card.word);
   const [translation, setTranslation] = useState(card.translation);
-  const { changeCardWord, changeCardTranslation, removeCard } = useAppStore((state) => state.actions);
+  const { changeCardWord, changeCardTranslation, removeCard } = useAppStore((state) => state);
 
   const changeWord = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;

@@ -12,7 +12,7 @@ type DeckListProps = {
 
 export const DeckList = ({ selectDeck }: DeckListProps) => {
   const decks: Deck[] = useAppStore((state) => state.info.decks);
-  const { addNewDeck, removeDeck } = useAppStore((state) => state.actions);
+  const { addNewDeck, removeDeck } = useAppStore((state) => state);
 
   const [newDeckName, setNewDeckName] = useState("");
   const [isValidDeckName, setIsValidDeckName] = useState(true);

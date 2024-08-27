@@ -11,7 +11,7 @@ import { randomCards } from "./common/random";
 type LearningWordsAppState = "decks" | "cards" | "learning";
 
 function App() {
-  const getDeckById = useAppStore((state) => state.actions.getDeckById);
+  const getDeckById = useAppStore((state) => state.getDeckById);
 
   const [selectedDeckId, setSelectedDeckId] = useState<string | undefined>();
   const [appState, setAppState] = useState<LearningWordsAppState>("decks");

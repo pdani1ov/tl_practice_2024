@@ -9,7 +9,7 @@ type ChangeDeckNameProps = {
 };
 
 export const ChangeDeckName = ({ deckId }: ChangeDeckNameProps) => {
-  const changeDeckName = useAppStore((state) => state.actions.changeDeckName);
+  const changeDeckName = useAppStore((state) => state.changeDeckName);
 
   const [newDeckName, setNewDeckName] = useState("");
   const [isValidDeckName, setIsValidDeckName] = useState(true);
