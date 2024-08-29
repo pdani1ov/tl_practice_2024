@@ -6,14 +6,12 @@ import { CardListItems } from "./blocks/cardListItems/CardListItems";
 import { CreateCard } from "./blocks/createCard/CreateCard";
 import { CardListHeader } from "./blocks/cardListHeader/CardListHeader";
 import { ErrorMessage } from "../errorMessage/ErrorMessage";
+import { useNavigate, useParams } from "react-router-dom";
 
-type CardListProps = {
-  onClose: () => void;
-  learnWords: () => void;
-  deckId: string;
-};
-
-export const CardList = ({ onClose, learnWords, deckId }: CardListProps) => {
+export const CardList = () => {
+  const navigate = useNavigate();
+  const params = useParams();
+  const deckId = params.id ?? "";
   const deck = useAppStore((state) => state.getDeckById(deckId));
 
   const [deckName, setDeckName] = useState("");
@@ -27,7 +25,11 @@ export const CardList = ({ onClose, learnWords, deckId }: CardListProps) => {
       }, 2000);
       return;
     }
-    learnWords();
+    navigate(`/learning/${deck.id}`);
+  };
+
+  const onClose = () => {
+    navigate(`/`);
   };
 
   useEffect(() => {

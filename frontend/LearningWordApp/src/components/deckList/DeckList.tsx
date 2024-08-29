@@ -5,12 +5,10 @@ import styles from "./DeckList.module.scss";
 import { TextField } from "../textField/TextField";
 import { useState } from "react";
 import { Button } from "../button/Button";
+import { useNavigate } from "react-router-dom";
 
-type DeckListProps = {
-  selectDeck: (deck: Deck) => void;
-};
-
-export const DeckList = ({ selectDeck }: DeckListProps) => {
+export const DeckList = () => {
+  const navigate = useNavigate();
   const decks: Deck[] = useAppStore((state) => state.info.decks);
   const { addNewDeck, removeDeck } = useAppStore((state) => state);
 
@@ -40,7 +38,7 @@ export const DeckList = ({ selectDeck }: DeckListProps) => {
             key={deck.id}
             deck={deck}
             onClick={() => {
-              selectDeck(deck);
+              navigate(`/deck/${deck.id}`);
             }}
             onDeleteClick={onDeleteClick}
           />
