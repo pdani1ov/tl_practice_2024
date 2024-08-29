@@ -1,0 +1,20 @@
+.learning-cards-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.back-button-container {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+}
+
+.learning-cards-header-name {
+  color: #6c19ff;
+  font-size: 35px;
+  font-weight: 900;
+  user-select: none;
+  text-align: center;
+}

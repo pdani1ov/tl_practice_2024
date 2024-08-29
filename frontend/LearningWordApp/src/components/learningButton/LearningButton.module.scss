@@ -1,0 +1,33 @@
+@mixin button() {
+  border-radius: 5px;
+  border-width: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 5px 20px;
+  height: 40px;
+  user-select: none;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.button-positive {
+  @include button();
+  background-color: #6dfa7b;
+  border-color: #038720;
+}
+
+.button-negative {
+  @include button();
+  background-color: #fa6d7b;
+  border-color: #870320;
+}
+
+.button-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}

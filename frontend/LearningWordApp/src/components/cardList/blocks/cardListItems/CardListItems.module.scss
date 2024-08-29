@@ -1,0 +1,26 @@
+.card-list-items-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+  height: auto;
+  height: calc(100% - 260px);
+  min-height: 100px;
+}
+
+.card-list-block-header {
+  user-select: none;
+  color: #6c19ff;
+  font-size: 20px;
+  height: 40px;
+}
+
+.card-list-items {
+  padding-right: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  overflow: hidden;
+  overflow-y: auto;
+}
