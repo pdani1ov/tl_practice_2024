@@ -1,0 +1,14 @@
+{
+  "authors": [
+    {
+      "firstName": "Александр",
+      "lastName": "Островский",
+      "birthDate": "1823-05-31"
+    },
+    {
+      "firstName": "Лев",
+      "lastName": "Толстой",
+      "birthDate": "1828-08-28"
+    }
+  ]
+}
